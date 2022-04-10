@@ -1,10 +1,29 @@
+const quoteContainer = document.getElementById('quote-container')
+const quoteText = document.getElementById('quote')
+const authorText = document.getElementById('author')
+const twitterBtm = document.getElementById('twitter')
+const newQuoteBtn = document.getElementById('new-quote')
+
 let apiQuotes = []
 
 // Show New Quote
 const newQuote = () => {
    // Pick a random quote from apiQuotes array
    const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)]
-   console.log(quote)
+
+   if (!quote.author) {
+      authorText.textContent = 'Неизвестен'
+   } else {
+      authorText.textContent = quote.author
+   }
+
+   if (quote.text.length > 100) {
+      quoteText.classList.add('long-quote')
+   } else {
+      quoteText.classList.remove('long-quote')
+   }
+
+   quoteText.textContent = quote.text
 }
 
 // Get Quotes from API
@@ -16,7 +35,7 @@ async function getQuotes() {
       apiQuotes = await res.json()
       newQuote()
    } catch (e) {
-      // Catch Error Here
+      console.log(e)
    }
 }
 
